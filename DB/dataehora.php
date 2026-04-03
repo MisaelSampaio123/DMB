@@ -1,0 +1,1 @@
+$html .= "<p>Gerado em: " . date('d/m/Y H:i:s') . "</p>";
