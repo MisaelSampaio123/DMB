@@ -56,5 +56,40 @@
             <button type="submit" class="btn-save">Registrar Armamento</button>
         </form>
     </div>
+<script>
+    document.getElementById('weaponForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Impede o recarregamento da página
+
+        // Captura os dados do formulário
+        const formData = {
+            tipo: document.getElementById('tipo').value,
+            modelo: document.getElementById('modelo').value,
+            serial: document.getElementById('serial').value,
+            calibre: document.getElementById('calibre').value,
+            status: document.getElementById('status').value
+        };
+
+        try {
+            const response = await fetch('salvar.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('✅ ' + result.message);
+                document.getElementById('weaponForm').reset(); // Limpa o formulário
+            } else {
+                alert('❌ Erro: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            alert('Erro ao conectar com o servidor.');
+        }
+    });
+</script>
+
 </body>
 </html>
