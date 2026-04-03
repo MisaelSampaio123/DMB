@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Arsenal OS - Rastreabilidade Total</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root { --primary: #00ff41; --danger: #ff3e3e; --bg: #0a0a0a; --card: #161616; }
+        body { font-family: 'Consolas', monospace; background: var(--bg); color: #d1d1d1; margin: 0; padding: 20px; }
+        .header { border-left: 5px solid var(--danger); padding-left: 15px; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .panel { background: var(--card); padding: 20px; border: 1px solid #333; border-radius: 4px; }
+        
+        /* Badges de Rastreabilidade */
+        .hash-tag { font-size: 10px; color: #666; display: block; }
+        .status-pill { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+        .in { background: #1b5e20; color: #4caf50; }
+        .out { background: #b71c1c; color: #ff8a80; }
+
+        input, select, button { background: #222; border: 1px solid #444; color: var(--primary); padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { cursor: pointer; border: 1px solid var(--primary); transition: 0.3s; text-transform: uppercase; }
+        button:hover { background: var(--primary); color: #000; }
+
+        .log-stream { height: 450px; overflow-y: scroll; background: #000; padding: 15px; border: 1px solid #222; font-size: 12px; line-height: 1.5; }
+        .log-entry { border-bottom: 1px solid #111; padding: 8px 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; border-bottom: 2px solid #333; padding: 10px; font-size: 12px; color: #888; }
+        td { padding: 10px; border-bottom: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>ARSENAL_MANAGEMENT_SYS v3.0</h1>
+    <small>RASTREABILIDADE EM TEMPO REAL | CRIPTOGRAFIA DE LOGS ATIVA</small>
+</div>
+
+<div class="grid">
+    <div class="panel">
+        <h2>📥 Registro de Movimentação</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <input type="text" id="operador" placeholder="ID/Nome do Operador">
+            <input type="text" id="patrimonio" placeholder="Nº de Patrimônio / Série">
+            <input type="text" id="item" placeholder="Descrição do Equipamento">
+            <select id="tipoMov">
+                <option value="CAUTELA">SAÍDA (CAUTELA)</option>
+                <option value="DEVOLUCAO">ENTRADA (DEVOLUÇÃO)</option>
+                <option value="MANUTENCAO">MANUTENÇÃO EXTERNA</option>
+            </select>
+        </div>
+        <button onclick="executarMovimentacao()">Confirmar e Gerar Hash de Rastreio</button>
+
+        <h3>📋 Inventário em Custódia</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>SÉRIE</th>
+                    <th>ITEM</th>
+                    <th>ÚLTIMO DETENTOR</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody id="listaInventario"></tbody>
+        </table>
+    </div>
+
+    <div class="panel">
+        <h2>📜 Trilha de Auditoria (Immutable Log)</h2>
+        <div class="log-stream" id="logAuditoria"></div>
+        <button onclick="limparTudo()" style="border-color: var(--danger); color: var(--danger); margin-top: 10px; font-size: 10px;">Resetar Banco de Dados</button>
+    </div>
+</div>
+
+<script>
+    // Inicialização do Banco de Dados Local
+    let db = JSON.parse(localStorage.getItem('arsenal_db')) || { inventario: [], logs: [] };
+
+    function salvarDB() {
+        localStorage.setItem('arsenal_db', JSON.stringify(db));
+        renderizar();
+    }
+
+    function gerarHash() {
+        return Math.random().toString(36).substring(2, 15).toUpperCase();
+    }
+
+    function executarMovimentacao() {
+        const op = document.getElementById('operador').value;
+        const pat = document.getElementById('patrimonio').value;
+        const item = document.getElementById('item').value;
+        const tipo = document.getElementById('tipoMov').value;
+
+        if(!op || !pat || !item) return alert("ERRO: Campos obrigatórios ausentes.");
+
+        const hash = gerarHash();
+        const timestamp = new Date().toLocaleString();
+
+        // Criar Registro de Log
+        const novoLog = {
+            id: hash,
+            data: timestamp,
+            operador: op,
+            patrimonio: pat,
+            acao: tipo,
+            equipamento: item
+        };
+
+        db.logs.unshift(novoLog);
+
+        // Atualizar Estado do Inventário
+        const index = db.inventario.findIndex(i => i.serie === pat);
+        if(index > -1) {
+            db.inventario[index] = { serie: pat, nome: item, detentor: op, status: tipo };
+        } else {
+            db.inventario.push({ serie: pat, nome: item, detentor: op, status: tipo });
+        }
+
+        salvarDB();
+        
+        // Limpar campos
+        document.getElementById('patrimonio').value = '';
+        document.getElementById('item').value = '';
+    }
+
+    function renderizar() {
+        const tabela = document.getElementById('listaInventario');
+        const logStream = document.getElementById('logAuditoria');
+        
+        tabela.innerHTML = '';
+        db.inventario.forEach(i => {
+            const classe = i.status === 'CAUTELA' ? 'out' : 'in';
+            tabela.innerHTML += `
+                <tr>
+                    <td><small>${i.serie}</small></td>
+                    <td>${i.nome}</td>
+                    <td>${i.detentor}</td>
+                    <td><span class="status-pill ${classe}">${i.status}</span></td>
+                </tr>
+            `;
+        });
+
+        logStream.innerHTML = '';
+        db.logs.forEach(l => {
+            logStream.innerHTML += `
+                <div class="log-entry">
+                    <span class="hash-tag">ID_HASH: ${l.id}</span>
+                    <strong>[${l.data}]</strong> ${l.operador} -> ${l.acao}: ${l.equipamento} (${l.patrimonio})
+                </div>
+            `;
+        });
+    }
+
+    function limparTudo() {
+        if(confirm("Deseja apagar TODO o histórico de auditoria? Esta ação é irreversível.")) {
+            db = { inventario: [], logs: [] };
+            salvarDB();
+        }
+    }
+
+    renderizar();
+</script>
+</body>
+</html>

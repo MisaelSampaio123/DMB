@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>DMB - Sistema de Prontuários</title>
+    <script src="banco.js"></script>
+    <style>
+        :root {
+            --primaria: #1a2a3a; /* Azul Marinho Oficial */
+            --destaque: #d4a017; /* Dourado Militar */
+            --fundo: #f4f7f6;
+            --texto: #2c3e50;
+        }
+
+        body {
+            background-color: var(--fundo);
+            color: var(--texto);
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Cabeçalho de Autoridade */
+        header {
+            background: var(--primaria);
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid var(--destaque);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Área de Busca */
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            padding: 12px;
+            width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus { border-color: var(--primaria); outline: none; }
+
+        button {
+            background: var(--primaria);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #2c3e50; transform: translateY(-2px); }
+
+        /* Estilo do Prontuário (Card) */
+        .card-prontuario {
+            margin-top: 40px;
+            background: white;
+            width: 700px;
+            border: 1px solid #ccc;
+            display: grid;
+            grid-template-columns: 220px 1fr; /* Foto à esquerda, dados à direita */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .foto-perfil {
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid var(--destaque);
+        }
+
+        .foto-perfil img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dados-container {
+            padding: 30px;
+        }
+
+        .dados-container h2 {
+            margin: 0 0 20px 0;
+            color: var(--primaria);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .label { font-weight: bold; color: #7f8c8d; font-size: 0.9rem; }
+        .valor { font-weight: 600; color: var(--primaria); }
+
+        .serie-destaque {
+            background: #fff3cd;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #856404;
+        }
+
+        #erro-msg { color: #c0392b; margin-top: 20px; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DIVISÃO DE MATERIAL BÉLICO - CONSULTA DE ACERVO</h1>
+    </header>
+
+    <div class="search-box">
+        <input id="cpf" placeholder="DIGITE O CPF PARA PESQUISA">
+        <button onclick="buscar()">CONSULTAR REGISTRO</button>
+    </div>
+
+    <div id="resultado"></div>
+    <div id="erro-msg">AVISO: REGISTRO NÃO ENCONTRADO NO BANCO DE DADOS.</div>
+
+    <script>
+        function buscar() {
+            const input = document.getElementById("cpf");
+            const res = document.getElementById("resultado");
+            const err = document.getElementById("erro-msg");
+            
+            const cpfLimpo = input.value.replace(/\D/g, "");
+            
+            res.innerHTML = "";
+            err.style.display = "none";
+
+            const pessoa = suspeitos.find(s => s.cpf === cpfLimpo);
+
+            if (pessoa) {
+                res.innerHTML = `
+                    <div class="card-prontuario">
+                        <div class="foto-perfil">
+                            <img src="${pessoa.foto}" alt="Foto do Indivíduo">
+                        </div>
+                        <div class="dados-container">
+                            <h2>Dados do Proprietário</h2>
+                            <div class="info-item">
+                                <span class="label">NOME COMPLETO:</span>
+                                <span class="valor">${pessoa.nome}</span>
+                            </div>
+                            <div class="info-row info-item">
+                                <span class="label">CPF CADASTRADO:</span>
+                                <span class="valor">${pessoa.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</span>
+                            </div>
+                            <h2 style="margin-top:25px">Especificações do Material</h2>
+                            <div class="info-item">
+                                <span class="label">ARMAMENTO:</span>
+                                <span class="valor">${pessoa.armas}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">CALIBRE:</span>
+                                <span class="valor">${pessoa.calibre}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">NÚMERO DE SÉRIE:</span>
+                                <span class="valor"><span class="serie-destaque">${pessoa.serie}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                input.value = "";
+            } else if (cpfLimpo !== "") {
+                err.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>

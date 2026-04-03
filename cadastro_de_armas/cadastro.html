@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Cadastro de Armamento</title>
+</head>
+<body>
+    </div>
+        <a href="../index.html" class="btn-back">Voltar</a>
+    <div class="container">
+        <header>
+            <h2>Cadastro de Armas</h2>
+            <p>Gerenciamento de Inventário Tático</p>
+        </header>
+
+        <form id="weaponForm">
+            <div class="input-group">
+                <label for="tipo">Tipo de Armamento</label>
+                <select id="tipo" required>
+                    <option value="" disabled selected>Selecione o tipo...</option>
+                    <option value="pistola">Pistola</option>
+                    <option value="fuzil">Fuzil</option>
+                    <option value="submetralhadora">Submetralhadora</option>
+                    <option value="espingarda">Espingarda</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="input-group">
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" placeholder="Ex: Glock G17 Gen5" required>
+                </div>
+                <div class="input-group">
+                    <label for="serial">Número de Série (Sigma)</label>
+                    <input type="text" id="serial" placeholder="Nº de Registro" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group">
+                    <label for="calibre">Calibre</label>
+                    <input type="text" id="calibre" placeholder="Ex: 9mm, .40, 5.56">
+                </div>
+                <div class="input-group">
+                    <label for="status">Status Operacional</label>
+                    <select id="status">
+                        <option value="disponivel">Disponível</option>
+                        <option value="manutencao">Em Manutenção</option>
+                        <option value="cautela">Em Cautela</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-save">Registrar Armamento</button>
+        </form>
+    </div>
+</body>
+</html>

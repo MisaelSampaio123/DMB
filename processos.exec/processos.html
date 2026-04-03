@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle - Sistema de Processos</title>
+    <!-- Link para o arquivo CSS (se você salvar separado) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Botão Voltar Fixo -->
+<a href="../index.html" class="btn-back">Voltar</a>
+
+<div class="container">
+    <div class="header-section">
+        <h2>Gerenciamento de Processos</h2>
+    </div>
+
+    <!-- Seção de Cadastro -->
+    <div class="form-section">
+        <div class="form-group">
+            <label>Tipo</label>
+            <select id="newTipo">
+                <option value="Usuário"> Usuário</option>
+                <option value="Arma"> Arma</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Detalhes</label>
+            <input type="text" id="newDetalhe" placeholder="Nome ou Modelo">
+        </div>
+        <div class="form-group">
+            <label>Observação</label>
+            <input type="text" id="newObs" placeholder="Notas...">
+        </div>
+        <button class="btn-add" onclick="addNewRow()">CADASTRAR</button>
+    </div>
+
+    <!-- Controles -->
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Pesquisar registros...">
+        </div>
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTable('todos', this)">TODOS</button>
+            <button class="filter-btn" onclick="filterTable('concluido', this)">CONCLUÍDOS</button>
+            <button class="filter-btn" onclick="filterTable('andamento', this)">EM ANDAMENTO</button>
+            <button class="filter-btn" onclick="filterTable('negado', this)">NEGADOS</button>
+        </div>
+    </div>
+
+    <!-- Tabela -->
+    <table id="processTable">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Detalhes</th>
+                <th>Status</th>
+                <th>Observações</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Registros dinâmicos entram aqui via JS -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Lógica de Adicionar
+    function addNewRow() {
+        const tipo = document.getElementById('newTipo').value;
+        const detalhe = document.getElementById('newDetalhe').value;
+        const obs = document.getElementById('newObs').value;
+        const data = new Date().toLocaleDateString('pt-BR');
+        if(!detalhe) return alert("Preencha os detalhes!");
+
+        const tbody = document.querySelector('#processTable tbody');
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-status', 'andamento');
+        tr.innerHTML = `
+            <td>${data}</td>
+            <td>${tipo}</td>
+            <td>${detalhe}</td>
+            <td class="status-cell"><span class="badge andamento">ANDAMENTO</span></td>
+            <td class="obs-cell">${obs}</td>
+            <td class="actions">
+                <button class="btn-edit" onclick="toggleEdit(this)">Editar</button>
+                <button class="btn-delete" onclick="deleteRow(this)">Excluir</button>
+            </td>`;
+        tbody.prepend(tr);
+        document.getElementById('newDetalhe').value = '';
+        document.getElementById('newObs').value = '';
+    }
+
+    // Lógica de Excluir
+    function deleteRow(btn) {
+        if(confirm("Deseja realmente excluir?")) btn.closest('tr').remove();
+    }
+
+    // Lógica de Busca
+    function searchTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('#processTable tbody tr').forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(input) ? '' : 'none';
+        });
+    }
+
+    // Lógica de Filtro
+    function filterTable(criteria, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('#processTable tbody tr').forEach(row => {
+            const status = row.getAttribute('data-status');
+            row.style.display = (criteria === 'todos' || status === criteria) ? '' : 'none';
+        });
+    }
+
+    // Lógica de Editar/Salvar
+    function toggleEdit(btn) {
+        const row = btn.closest('tr');
+        const statusCell = row.querySelector('.status-cell');
+        const obsCell = row.querySelector('.obs-cell');
+
+        if (btn.innerText === "Editar") {
+            const currentStatus = row.getAttribute('data-status');
+            const currentObs = obsCell.innerText;
+            statusCell.innerHTML = `
+                <select style="width:100%">
+                    <option value="concluido" ${currentStatus === 'concluido' ? 'selected' : ''}>CONCLUIDO</option>
+                    <option value="andamento" ${currentStatus === 'andamento' ? 'selected' : ''}>ANDAMENTO</option>
+                    <option value="negado" ${currentStatus === 'negado' ? 'selected' : ''}>NEGADO</option>
+                </select>`;
+            obsCell.innerHTML = `<input type="text" value="${currentObs}" style="width:100%">`;
+            btn.innerText = "Salvar";
+            btn.classList.add('btn-save');
+        } else {
+            const newStatus = statusCell.querySelector('select').value;
+            const newObs = obsCell.querySelector('input').value;
+            row.setAttribute('data-status', newStatus);
+            statusCell.innerHTML = `<span class="badge ${newStatus}">${newStatus.toUpperCase()}</span>`;
+            obsCell.innerText = newObs;
+            btn.innerText = "Editar";
+            btn.classList.remove('btn-save');
+        }
+    }
+</script>
+</body>
+</html>

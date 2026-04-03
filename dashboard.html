@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Arsenal OS - Command Center</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root { --neon-green: #00ff41; --neon-red: #ff3e3e; --neon-blue: #00e5ff; --bg: #050505; --panel: #111; }
+        body { font-family: 'Segoe UI', Consolas, monospace; background: var(--bg); color: #fff; margin: 0; padding: 20px; overflow-x: hidden; }
+        
+        /* Layout Grid */
+        .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto 1fr; gap: 15px; }
+        
+        /* Widgets de Resumo */
+        .stat-card { background: var(--panel); border: 1px solid #333; padding: 20px; text-align: center; border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,255,65,0.05); }
+        .stat-card h3 { font-size: 0.8em; color: #888; text-transform: uppercase; margin: 0; }
+        .stat-card .value { font-size: 2.5em; font-weight: bold; color: var(--neon-green); margin: 10px 0; }
+
+        /* Gráficos e Tabelas */
+        .main-panel { grid-column: span 3; background: var(--panel); border: 1px solid #333; padding: 20px; }
+        .side-panel { grid-column: span 1; background: var(--panel); border: 1px solid #333; padding: 20px; }
+
+        h2 { border-left: 4px solid var(--neon-blue); padding-left: 10px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 2px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        th { text-align: left; color: var(--neon-blue); padding: 10px; border-bottom: 2px solid #222; }
+        td { padding: 10px; border-bottom: 1px solid #222; }
+
+        .form-control { background: #000; border: 1px solid #333; color: #fff; padding: 10px; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
+        .btn-action { background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); padding: 10px; width: 100%; cursor: pointer; font-weight: bold; }
+        .btn-action:hover { background: var(--neon-green); color: #000; }
+
+        .pulse { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 62, 62, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); } }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="stat-card">
+        <h3>Total de Ativos</h3>
+        <div class="value" id="totalAtivos">0</div>
+    </div>
+    <div class="stat-card">
+        <h3>Em Cautela (Rua)</h3>
+        <div class="value" style="color: var(--neon-red)" id="totalOut">0</div>
+    </div>
+    <div class="stat-card">
+        <h3>Prontidão Operacional</h3>
+        <div class="value" style="color: var(--neon-blue)" id="prontidao">100%</div>
+    </div>
+    <div class="stat-card">
+        <h3>Alertas Ativos</h3>
+        <div class="value pulse" style="color: #ffa000" id="totalAlerts">0</div>
+    </div>
+
+    <div class="side-panel">
+        <h2>🎮 Comando</h2>
+        <input type="text" id="op" class="form-control" placeholder="Operador Responsável">
+        <input type="text" id="serie" class="form-control" placeholder="Nº de Série / Patrimônio">
+        <input type="text" id="item" class="form-control" placeholder="Modelo (Ex: G17, T4)">
+        <select id="acao" class="form-control">
+            <option value="IN">ENTRADA (DEPOSITO)</option>
+            <option value="OUT">SAÍDA (CAUTELA)</option>
+            <option value="MAINT">MANUTENÇÃO</option>
+        </
