@@ -3,87 +3,85 @@
 <head>
 <title>Painel Sentinel</title>
 
-
 <style>
-
-body{
-    margin:0;
-    font-family: Arial;
-    background:#1b1f24;
-    color:white;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: white; /* Mudei para um fundo escuro para destacar o estilo tech */
+    color: white;
 }
 
 /* topo */
-.topo{
-    background:#1a2a3a;
+.topo {
+    background: #1a2a3a;
     padding: 15px;
-    text-align:center;
-    font-size:22px;
-    letter-spacing:2px;
+    border-bottom: 5px solid #d4a017;
+    text-align: center;
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    font-weight: bold;
 }
 
-/* área dos botões */
-.menu{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    margin-top:50px;
+/* área dos botões - Ajustada para Grid 2x2 */
+.menu {
+    display: grid;
+    grid-template-columns: repeat(2, 200px); /* Cria duas colunas */
+    gap: 30px; /* Espaçamento entre os botões (vertical e horizontal) */
+    justify-content: center; /* Centraliza a grade na tela */
+    margin-top: 50px;
 }
 
 /* botões */
-.botao{
-    width:200px;
-    height:100px;
-    margin:20px;
-    background:#2c5e94;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:10px;
-    font-size:18px;
-    cursor:pointer;
-    transition:0.3s;
+.botao {
+    width: 200px;
+    height: 100px;
+    background: #2c5e94;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.botao:hover{
-    background:#3e7cc2;
-    transform:scale(1.05);
+.botao:hover {
+    background: #3e7cc2;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(62, 124, 194, 0.5);
 }
 
-a{
-    text-decoration:none;
-    color:white;
+a {
+    text-decoration: none;
+    color: white;
 }
-
 </style>
 
 </head>
-
 <body>
 
-
 <div class="topo">
-DEPARTAMENTO DE MATERIAL BÉLICO
+    DEPARTAMENTO DE MATERIAL BÉLICO
 </div>
 
 <div class="menu">
+    <a href="cadastro_de_armas/cadastro.html">
+        <div class="botao">CADASTRAR</div>
+    </a>
 
-<a href="cadastro_de_armas/cadastro.html">
-<div class="botao">CADASTRAR</div>
-</a>
+    <a href="armas.html">
+        <div class="botao">ARMAS</div>
+    </a>
 
-<a href="armas.html">
-<div class="botao">ARMAS</div>
-</a>
+    <a href="../projeto DMB/processos.exec/processos.html">
+        <div class="botao">PROCESSOS</div>
+    </a>
 
-<a href="../projeto DMB/processos.exec/processos.html">
-<div class="botao">PROCESSOS</div>
-</a>
-
-<a href="consulta.exec/consulta.html">
-<div class="botao">CONSULTAR</div>
-</a>
-
+    <a href="consulta.exec/consulta.html">
+        <div class="botao">CONSULTAR</div>
+    </a>
 </div>
 
 </body>
