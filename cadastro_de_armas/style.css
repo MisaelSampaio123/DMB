@@ -1,10 +1,10 @@
 :root {
     --bg-color: #0d1117;
-    --card-bg: rgba(22, 27, 34, 0.8);
-    --accent-color: #00f2ff; /* Ciano Neon */
+    --card-bg: #071730;
+    --accent-color: #d4a017; /* Ciano Neon */
     --text-primary: #ffedf3;
-    --text-secondary: #8b949e;
-    --border-color: rgba(75, 116, 163, 0.8);
+    --text-secondary: #ffedf3;
+    --border-color: #d4a017;
 }
 
 body {
@@ -69,7 +69,7 @@ label {
 }
 
 input, select {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(116, 114, 114, 0.2);
     border: 1px solid var(--border-color);
     padding: 12px;
     border-radius: 6px;
@@ -80,7 +80,7 @@ input, select {
 
 input:focus, select:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
+    box-shadow: 0 0 8px #0d1117;
 }
 
 .btn-save {
@@ -97,10 +97,10 @@ input:focus, select:focus {
     transition: all 0.3s ease;
 }
 select{
-background-color: rgba(17, 28, 49, 0.87);
+background-color: rgba(7, 40, 102, 0.87);
 }
 .btn-save:hover{
-background-color: rgb(25, 52, 97);
+background-color: #d4a017;
 }
 /* Estado normal do botão - Fixo no topo */
 .btn-back {
