@@ -3,49 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-<style>
-    body .topo {
-    background: #1a2a3a;
-    padding: 15px;
-    border-bottom: 5px solid #d4a017;
-    text-align: center;
-    font-size: 22px;
-    letter-spacing: 2px;
-    margin-bottom: 40px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-    
-</style>
+    <title>DMB - Relatório Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --text-light: #f8f9fa;
+            --transition: all 0.3s ease;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Background robusto com fallback de cor */
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+                url('../DMBCHAT.png'), #1a1a1a;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-color);
+        }
+
+        h3 {
+            font-weight: 300;
+            margin: 1.5rem 0;
+            opacity: 0.9;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            margin: 2rem 0;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-download:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        /* Pequeno ajuste para o ícone */
+        .btn-download span {
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body>
-   <h1>DIVISÃO DE MATERIAL BÉLICO</h1>
-<h3>Relatório Oficial de Armamentos</h3>
-<hr>
 
+    <main class="container">
+        <header>
+            <h1>DMB</h1>
+            <h3>Divisão de Material Bélico</h3>
+        </header>
 
-<a href="gerar_pdf.php">
-    <button>📥 Baixar Relatório em PDF</button>
-</a> 
+        <hr>
 
-<style>
-body {
-    background: 
-        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-        url('../DMBCHAT.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    margin: 0;
-    color: white;
-    font-family: Arial;
-    text-align: center;
-}
-</style>
-
+        <section>
+            <p style="margin-bottom: 2rem; font-size: 0.9rem; color: #ccc;">
+                Acesse abaixo o Relatório Oficial de Armamentos atualizado.
+            </p>
+            
+            <a href="gerar_pdf.php" class="btn-download">
+                <span>📥</span> Baixar Relatório em PDF
+            </a>
+        </section>
+    </main>
 
 </body>
 </html>
