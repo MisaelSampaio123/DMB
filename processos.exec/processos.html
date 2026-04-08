@@ -105,7 +105,6 @@
         });
     }
 
-    // Lógica de Filtro
     function filterTable(criteria, btn) {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
@@ -115,7 +114,6 @@
         });
     }
 
-    // Lógica de Editar/Salvar
     function toggleEdit(btn) {
         const row = btn.closest('tr');
         const statusCell = row.querySelector('.status-cell');
