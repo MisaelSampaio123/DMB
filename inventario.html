@@ -1,195 +1,566 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Inventário de Armamentos</title>
+    <title>DMB | Inventário de Armamentos</title>
+
     <style>
-        .btn-voltar {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: #444;
-            color: white;
-            padding: 10px 20px;
-            border: 1px solid #d32f2f;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        :root {
+            --bg-dark: #0b1118;
+            --bg-overlay: rgba(4, 8, 14, 0.82);
+            --panel: rgba(13, 22, 34, 0.92);
+            --panel-soft: rgba(20, 34, 52, 0.96);
+            --card: rgba(18, 34, 52, 0.88);
+            --border: rgba(255, 255, 255, 0.10);
+            --gold: #d4a017;
+            --gold-soft: rgba(212, 160, 23, 0.18);
+            --blue: #245e94;
+            --blue-hover: #3170ac;
+            --text: #ffffff;
+            --text-soft: #c7d2e0;
+            --danger: #d9534f;
+            --danger-hover: #b93d39;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --shadow: 0 18px 45px rgba(0, 0, 0, 0.42);
         }
 
-        .btn-voltar:hover {
-            background-color: #d32f2f;
-            color: white;
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                url('fotos/fundo.jpg') center/cover no-repeat fixed;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            padding: 20px;
+            padding: 30px 20px 90px;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: #2d2d2d;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        .pagina {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(9, 15, 23, 0.58);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
         }
 
-        h2 {
-            border-bottom: 2px solid #d32f2f;
-            padding-bottom: 10px;
-            color: #d32f2f;
+        .topo {
+            background: linear-gradient(90deg, #16304b 0%, #0f2235 100%);
+            padding: 24px 28px;
+            border-bottom: 4px solid var(--gold);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .topo-conteudo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .titulo-area {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .titulo-area small {
+            color: var(--text-soft);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .titulo-area h1 {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: 1.2px;
+            color: var(--text);
+        }
+
+        .status-topo {
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: var(--gold-soft);
+            border: 1px solid rgba(212, 160, 23, 0.35);
+            color: #f8e5a4;
+            font-weight: 700;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .conteudo {
+            padding: 30px;
+        }
+
+        .descricao {
+            color: var(--text-soft);
+            line-height: 1.6;
+            margin: 0 0 24px;
+            font-size: 15px;
+        }
+
+        .bloco-formulario {
+            background: linear-gradient(180deg, rgba(20, 34, 52, 0.95) 0%, rgba(13, 22, 34, 0.95) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .bloco-formulario h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            color: #ffffff;
+            border-left: 4px solid var(--gold);
+            padding-left: 12px;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 0.8fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .campo label {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        input::placeholder {
+            color: #aeb9c7;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
+        }
+
+        select option {
+            background: #122234;
+            color: #ffffff;
+        }
+
+        .btn-principal {
+            padding: 13px 18px;
+            min-width: 180px;
+            background: linear-gradient(135deg, var(--blue) 0%, #1d4c7d 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.25s ease;
+            height: 46px;
+        }
+
+        .btn-principal:hover {
+            background: linear-gradient(135deg, var(--blue-hover) 0%, #255f98 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+        }
+
+        .bloco-tabela {
+            background: linear-gradient(180deg, rgba(20, 34, 52, 0.95) 0%, rgba(13, 22, 34, 0.95) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .bloco-tabela .cabecalho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 20px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .bloco-tabela .cabecalho h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .contador {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-soft);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+        }
+
+        .tabela-wrap {
+            width: 100%;
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            min-width: 760px;
         }
 
-        th,
-        td {
-            padding: 12px;
+        thead th {
+            background: rgba(212, 160, 23, 0.12);
+            color: #f6deb0;
             text-align: left;
-            border-bottom: 1px solid #444;
+            padding: 14px 18px;
+            font-size: 13px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        th {
-            background-color: #d32f2f;
-            color: white;
+        tbody td {
+            padding: 15px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: #e5edf7;
+            font-size: 14px;
         }
 
-        tr:hover {
-            background-color: #383838;
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        .status-ready {
-            color: #4caf50;
-            font-weight: bold;
+        .item-nome {
+            font-weight: 700;
+            color: #ffffff;
         }
 
-        .status-maint {
-            color: #ff9800;
-            font-weight: bold;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 12px;
+            min-width: 108px;
+            text-align: center;
         }
 
-        .form-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        .status-operacional {
+            background: rgba(76, 175, 80, 0.14);
+            color: #7ce481;
+            border: 1px solid rgba(76, 175, 80, 0.28);
         }
 
-        input,
-        select {
-            padding: 10px;
-            border-radius: 4px;
-            border: none;
-            background: #444;
-            color: white;
+        .status-manutencao {
+            background: rgba(255, 152, 0, 0.14);
+            color: #ffbf5a;
+            border: 1px solid rgba(255, 152, 0, 0.28);
         }
 
-        button {
-            padding: 10px 20px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #b71c1c;
+        .status-limpeza {
+            background: rgba(66, 165, 245, 0.14);
+            color: #7bc7ff;
+            border: 1px solid rgba(66, 165, 245, 0.28);
         }
 
         .btn-delete {
-            background: #555;
-            padding: 5px 10px;
+            background: rgba(217, 83, 79, 0.12);
+            color: #ffb3b0;
+            border: 1px solid rgba(217, 83, 79, 0.28);
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: #ffffff;
+        }
+
+        .btn-voltar {
+            position: fixed;
+            bottom: 22px;
+            left: 22px;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(55, 55, 55, 0.95) 100%);
+            color: #ffffff;
+            padding: 12px 18px;
+            border: 1px solid rgba(212, 160, 23, 0.4);
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+            z-index: 20;
+        }
+
+        .btn-voltar:hover {
+            background: linear-gradient(135deg, #1d4c7d 0%, #245e94 100%);
+            transform: translateY(-2px);
+        }
+
+        .vazio {
+            text-align: center;
+            padding: 30px 20px;
+            color: #aeb9c7;
+            font-style: italic;
+        }
+
+        @media (max-width: 980px) {
+            .form-group {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-group .campo:last-of-type,
+            .form-group .campo:nth-last-of-type(2) {
+                grid-column: span 1;
+            }
+
+            .btn-principal {
+                width: 100%;
+                min-width: auto;
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 16px 12px 90px;
+            }
+
+            .topo {
+                padding: 18px 18px;
+            }
+
+            .titulo-area h1 {
+                font-size: 22px;
+                line-height: 1.3;
+            }
+
+            .conteudo {
+                padding: 18px;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-voltar {
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>🛡️ Inventário de Armamentos</h2>
-
-        <div class="form-group">
-            <input type="text" id="nome" placeholder="Nome do Equipamento">
-            <input type="text" id="calibre" placeholder="Calibre/Tipo">
-            <input type="number" id="municao" placeholder="Qtd Munição">
-            <select id="status">
-                <option value="Operacional">Operacional</option>
-                <option value="Manutenção">Manutenção</option>
-                <option value="Limpeza">Limpeza</option>
-            </select>
-            <button onclick="adicionarItem()">Adicionar ao Arsenal</button>
+    <div class="pagina">
+        <div class="topo">
+            <div class="topo-conteudo">
+                <div class="titulo-area">
+                    <small>Sistema interno</small>
+                    <h1>INVENTÁRIO DE ARMAMENTOS</h1>
+                </div>
+                <div class="status-topo">Controle Operacional</div>
+            </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Calibre</th>
-                    <th>Munição</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="lista-inventario">
-            </tbody>
-        </table>
+        <div class="conteudo">
+            <p class="descricao">
+                Gerencie o arsenal da unidade, acompanhe o status de cada armamento e registre rapidamente novos itens no inventário.
+            </p>
+
+            <div class="bloco-formulario">
+                <h2>Novo registro</h2>
+
+                <div class="form-group">
+                    <div class="campo">
+                        <label for="nome">Nome do equipamento</label>
+                        <input type="text" id="nome" placeholder="Ex.: Pistola Taurus TS9">
+                    </div>
+
+                    <div class="campo">
+                        <label for="calibre">Calibre / Tipo</label>
+                        <input type="text" id="calibre" placeholder="Ex.: 9mm">
+                    </div>
+
+                    <div class="campo">
+                        <label for="municao">Qtd. munição</label>
+                        <input type="number" id="municao" placeholder="Ex.: 50">
+                    </div>
+
+                    <div class="campo">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="Operacional">Operacional</option>
+                            <option value="Manutenção">Manutenção</option>
+                            <option value="Limpeza">Limpeza</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-principal" onclick="adicionarItem()">Adicionar ao Arsenal</button>
+                </div>
+            </div>
+
+            <div class="bloco-tabela">
+                <div class="cabecalho">
+                    <h2>Itens cadastrados</h2>
+                    <div class="contador">Total de registros: <span id="contador-itens">0</span></div>
+                </div>
+
+                <div class="tabela-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Calibre</th>
+                                <th>Munição</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-inventario">
+                            <tr id="linha-vazia">
+                                <td colspan="5" class="vazio">Nenhum item cadastrado no inventário até o momento.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+
     <button class="btn-voltar" onclick="window.history.back()">
-    ⬅ Voltar
+        ⬅ Voltar
     </button>
 
-
     <script>
+        function atualizarContador() {
+            const tabela = document.getElementById('lista-inventario');
+            const linhas = tabela.querySelectorAll('tr:not(#linha-vazia)');
+            document.getElementById('contador-itens').textContent = linhas.length;
+        }
+
+        function removerLinhaVazia() {
+            const linhaVazia = document.getElementById('linha-vazia');
+            if (linhaVazia) {
+                linhaVazia.remove();
+            }
+        }
+
+        function adicionarLinhaVaziaSeNecessario() {
+            const tabela = document.getElementById('lista-inventario');
+            const linhas = tabela.querySelectorAll('tr');
+
+            if (linhas.length === 0) {
+                tabela.innerHTML = `
+                    <tr id="linha-vazia">
+                        <td colspan="5" class="vazio">Nenhum item cadastrado no inventário até o momento.</td>
+                    </tr>
+                `;
+            }
+        }
+
+        function obterClasseStatus(status) {
+            if (status === 'Operacional') return 'status-operacional';
+            if (status === 'Manutenção') return 'status-manutencao';
+            return 'status-limpeza';
+        }
+
         function adicionarItem() {
-            const nome = document.getElementById('nome').value;
-            const calibre = document.getElementById('calibre').value;
-            const municao = document.getElementById('municao').value;
+            const nome = document.getElementById('nome').value.trim();
+            const calibre = document.getElementById('calibre').value.trim();
+            const municao = document.getElementById('municao').value.trim();
             const status = document.getElementById('status').value;
 
             if (nome === '' || calibre === '') {
-                alert("Por favor, preencha os campos básicos.");
+                alert('Por favor, preencha pelo menos o nome do equipamento e o calibre/tipo.');
                 return;
             }
+
+            removerLinhaVazia();
 
             const tabela = document.getElementById('lista-inventario');
             const novaLinha = tabela.insertRow();
 
-            const statusClass = (status === 'Operacional') ? 'status-ready' : 'status-maint';
+            const municaoFormatada = municao !== '' ? `${municao} un.` : '-';
+            const statusClass = obterClasseStatus(status);
 
             novaLinha.innerHTML = `
-            <td><strong>${nome}</strong></td>
-            <td>${calibre}</td>
-            <td>${municao} un.</td>
-            <td class="${statusClass}">${status}</td>
-            <td><button class="btn-delete" onclick="removerItem(this)">Excluir</button></td>`;
-            // Limpar campos
+                <td class="item-nome">${nome}</td>
+                <td>${calibre}</td>
+                <td>${municaoFormatada}</td>
+                <td><span class="status-badge ${statusClass}">${status}</span></td>
+                <td><button class="btn-delete" onclick="removerItem(this)">Excluir</button></td>
+            `;
+
             document.getElementById('nome').value = '';
             document.getElementById('calibre').value = '';
             document.getElementById('municao').value = '';
+            document.getElementById('status').value = 'Operacional';
+
+            atualizarContador();
         }
 
         function removerItem(btn) {
-            const row = btn.parentNode.parentNode;
-            row.parentNode.removeChild(row);
+            const row = btn.closest('tr');
+            row.remove();
+            adicionarLinhaVaziaSeNecessario();
+            atualizarContador();
         }
+
+        atualizarContador();
     </script>
 
 </body>

@@ -1,93 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<title>DMB</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMB | Painel Inicial</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    background-image:
-        linear-gradient(rgba(26, 20, 20, 0.75), rgba(0, 0, 0, 0.85)),
-        url('fotos/fundo.jpg');     
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    min-height: 100vh;
-}
+    <style>
+        :root {
+            --bg-dark: #0b1118;
+            --bg-overlay: rgba(4, 8, 14, 0.78);
+            --card-bg: rgba(18, 34, 52, 0.88);
+            --card-bg-hover: rgba(33, 69, 108, 0.96);
+            --border: rgba(255, 255, 255, 0.10);
+            --gold: #d4a017;
+            --gold-soft: rgba(212, 160, 23, 0.18);
+            --text: #ffffff;
+            --text-soft: #c7d2e0;
+            --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+        }
 
-.topo {
-    background: #1a2a3a;
-    padding: 15px;
-    border-bottom: 5px solid #d4a017;
-    text-align: center;
-    font-size: 22px;
-    letter-spacing: 2px;
-    margin-bottom: 40px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
+        * {
+            box-sizing: border-box;
+        }
 
-.menu {
-    display: grid;
-    grid-template-columns: repeat(2, 200px);
-    gap: 30px;
-    justify-content: center;
-    margin-top: 50px;
-}
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                url('fotos/fundo.jpg') center/cover no-repeat fixed;
+        }
 
-.botao {
-    width: 200px;
-    height: 100px;
-    background: rgba(44, 94, 148, 0.9); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px 20px;
+        }
 
-.botao:hover {
-    background: #3e7cc2;
-    transform: scale(1.05);
-    box-shadow: 0px 0px 20px rgba(62, 124, 194, 0.6);
-}
+        .pagina {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(9, 15, 23, 0.58);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+        }
 
-a {
-    text-decoration: none;
-    color: white;
-}
-</style>
+        .topo {
+            background: linear-gradient(90deg, #16304b 0%, #0f2235 100%);
+            padding: 22px 28px;
+            border-bottom: 4px solid var(--gold);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+        }
 
+        .topo-conteudo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .titulo-area {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .titulo-area small {
+            color: var(--text-soft);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .titulo-area h1 {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: 1.5px;
+            color: var(--text);
+        }
+
+        .status-sistema {
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: var(--gold-soft);
+            border: 1px solid rgba(212, 160, 23, 0.35);
+            color: #f8e5a4;
+            font-weight: bold;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .conteudo {
+            padding: 35px 30px 40px;
+        }
+
+        .descricao {
+            max-width: 760px;
+            margin: 0 auto 30px;
+            text-align: center;
+            color: var(--text-soft);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(240px, 320px));
+            gap: 28px;
+            justify-content: center;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .botao {
+            min-height: 140px;
+            background: linear-gradient(135deg, rgba(33, 84, 136, 0.92) 0%, rgba(24, 61, 101, 0.92) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.28s ease;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .botao::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255,255,255,0.08), transparent 45%, transparent 55%, rgba(255,255,255,0.05));
+            opacity: 0;
+            transition: opacity 0.28s ease;
+        }
+
+        .botao:hover {
+            transform: translateY(-6px) scale(1.01);
+            background: linear-gradient(135deg, rgba(49, 110, 172, 0.98) 0%, rgba(29, 76, 125, 0.98) 100%);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(212, 160, 23, 0.24);
+        }
+
+        .botao:hover::before {
+            opacity: 1;
+        }
+
+        .botao-titulo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .botao-desc {
+            font-size: 14px;
+            color: #dbe7f3;
+            line-height: 1.5;
+            max-width: 220px;
+        }
+
+        .rodape {
+            margin-top: 34px;
+            text-align: center;
+            color: #a9b7c8;
+            font-size: 13px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .topo {
+                padding: 18px 18px;
+            }
+
+            .titulo-area h1 {
+                font-size: 22px;
+                line-height: 1.3;
+            }
+
+            .conteudo {
+                padding: 24px 18px 28px;
+            }
+
+            .descricao {
+                font-size: 14px;
+            }
+
+            .menu {
+                grid-template-columns: 1fr;
+            }
+
+            .botao {
+                min-height: 120px;
+            }
+
+            .botao-titulo {
+                font-size: 21px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="topo">
-    DEPARTAMENTO DE MATERIAL BÉLICO
-</div>
+    <div class="pagina">
+        <div class="topo">
+            <div class="topo-conteudo">
+                <div class="titulo-area">
+                    <small>Sistema interno</small>
+                    <h1>DEPARTAMENTO DE MATERIAL BÉLICO</h1>
+                </div>
+                <div class="status-sistema">Painel Principal</div>
+            </div>
+        </div>
 
-<div class="menu">
-    <a href="cadastro_de_armas/cadastro.html">
-        <div class="botao">CADASTRAR</div>
-    </a>
+        <div class="conteudo">
+            <p class="descricao">
+                Acesse rapidamente os módulos do sistema para cadastro, controle, consulta e acompanhamento
+                dos processos do Departamento de Material Bélico.
+            </p>
 
-    <a href="inventario.html">
-        <div class="botao">ARMAS</div>
-    </a>
+            <div class="menu">
+                <a href="cadastro_de_armas/cadastro.html">
+                    <div class="botao">
+                        <div class="botao-titulo">CADASTRAR</div>
+                        <div class="botao-desc">Realize novos cadastros de armamentos e registros no sistema.</div>
+                    </div>
+                </a>
 
-    <a href="#">
-        <div class="botao">PROCESSOS</div>
-    </a>
+                <a href="inventario.html">
+                    <div class="botao">
+                        <div class="botao-titulo">ARMAS</div>
+                        <div class="botao-desc">Visualize o inventário, status operacional e manutenção do arsenal.</div>
+                    </div>
+                </a>
 
-    <a href="consulta.exec/consulta.html">
-        <div class="botao">CONSULTAR</div>
-    </a>
-</div>
+                <a href="#">
+                    <div class="botao">
+                        <div class="botao-titulo">PROCESSOS</div>
+                        <div class="botao-desc">Acompanhe trâmites internos, movimentações e fluxos administrativos.</div>
+                    </div>
+                </a>
+
+                <a href="consulta.exec/consulta.html">
+                    <div class="botao">
+                        <div class="botao-titulo">CONSULTAR</div>
+                        <div class="botao-desc">Pesquise informações, registros e dados já lançados no sistema.</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="rodape">
+                Divisão de Material Bélico • PMRR
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
